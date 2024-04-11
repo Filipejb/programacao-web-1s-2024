@@ -37,6 +37,6 @@ app.get('/dividir/:a/:b', (req, res) =>{
   }
 });
 
-app.listen(4000, () =>{
+app.listen(4000, function() {
   console.log('Servidor rodando na porta 4000');
 });
