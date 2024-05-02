@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class = "container">
+        <div class = "row">
+            <div class = "col-12 mt-3">
+                <h1>formulario de dados</h1>
+                <form action="/dados" method = "post">
+                    <div class = "mb-3 mt-3">
+                        <label for="nome" class=" form-label">Nome:</label>
+                        <input type="text" class = "form-control" id = "nome" name="nome" >
+                    </div>
+                    <div class = "mb-3 mt-3">
+                        <label for="endereco" class=" form-label">Endereço:</label>
+                        <input type="text" class = "form-control" id = "endereco" name="endereco" >
+                    </div>
+                    <div class = "mb-3 mt-3">
+                        <label for="telefone" class=" form-label">Telefone:</label>
+                        <input type="text" class = "form-control" id = "telefone" name="telefone" >
+                    </div>
+                    <div class = "mb-3 mt-3">
+                        <label for="data_agendamento" class=" form-label">Data de agendamento:</label>
+                        <input type="date" class = "form-control" id = "data_agendamento" name="data_agendamento" >
+                    </div>
+                    <button type="submit" class = "btn btn-primary w-100">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
