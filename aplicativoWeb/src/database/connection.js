@@ -3,7 +3,12 @@ const path = require('path');
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: path.join(__dirname, 'users.db')
+  storage: path.join(__dirname, 'database.sqlite')
 });
 
-module.exports = sequelize;
+const createTable = async () => {
+  await sequelize.sync();
+  console.log('Tabelas criadas com sucesso');
+};
+
+module.exports = { sequelize, createTable };
