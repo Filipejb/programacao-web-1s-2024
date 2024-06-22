@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sair da conta</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+        body {
+  background-color: #1e1e1e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+    </style>
+  </head>
+  <body>
+    <div class="confirmBox">
+      <h2>Certeza que deseja sair?</h2>
+      <div class="btn-container">
+          <button id="btnSim" class="btn btn-sim"><i class="bx bx-log-out"></i>Sim</button>
+          <button id="btnNao" class="btn btn-nao"><i class="bx bx-chevron-left"></i>Não</button>
+      </div>
+  </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          // Adiciona evento de clique ao botão "Sim"
+          document.getElementById("btnSim").addEventListener("click", function() {
+              // Redireciona para a página de login ao confirmar a saída da conta
+              window.location.href = "login.html";
+          });
+
+          // Adiciona evento de clique ao botão "Não"
+          document.getElementById("btnNao").addEventListener("click", function() {
+              // Redireciona de volta para a página principal ao cancelar a saída da conta
+              window.location.href = "home.html";
+          });
+      });
+  </script>
+  </body>
+</html>
