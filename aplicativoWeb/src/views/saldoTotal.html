@@ -1,0 +1,72 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saldo Total</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        body {
+  background-color: #1e1e1e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.confirmBox {
+  width: 50%; /* Ajuste a largura conforme necessário */
+  height: 25%; /* Ajuste a altura conforme necessário */
+  padding: 2%;
+  background-color: #000000;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.confirmBox h2 {
+  color: white;
+  margin-bottom: 20px;
+}
+
+.btn-retornar {
+    background-image: linear-gradient(
+    to right,
+    #ffd749,
+    #ffad33
+  ); /* Inversão das cores no hover */
+
+  color: rgb(0, 0, 0);
+}
+    </style>
+  </head>
+  <body>
+    <div class="confirmBox">
+      <h2>Saldo total</h2>
+      <h3 id="saldoTotal"></h3>
+      <a href="home.html" class="btn btn-retornar">Retornar</a>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          // Realizar uma requisição para obter o saldo total da sua tabela
+          fetch('/api/saldoTotal')
+              .then(response => response.json())
+              .then(data => {
+                  // Exibir o saldo total na página
+                  document.getElementById("saldoTotal").textContent = `Saldo Total: R$ ${data.saldo}`;
+              })
+              .catch(error => {
+                  console.error('Erro ao buscar saldo total:', error);
+              });
+      });
+  </script>
+  </body>
+</html>
