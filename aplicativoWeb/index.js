@@ -16,7 +16,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Configurar o middleware para servir arquivos estáticos
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
