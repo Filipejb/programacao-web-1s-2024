@@ -1,0 +1,77 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .btn-entrar {
+        background-image: linear-gradient(to right, #2e5f5b, #4d7264);
+        color: rgb(255, 255, 255);
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <i class="bx bxs-user"></i>
+      <h1>Login</h1>
+      <form id="login-form">
+        <input type="email" placeholder="Email" required />
+        <input type="password" placeholder="Senha" required />
+        <a href="cadastro.html">Ainda não possui cadastro?</a>
+        <a href="home.html" class="btn-entrar">Entrar</a>
+      </form>
+      <div id="errorMessage" class="error-message"></div>
+    </div>
+    <script>
+      document.getElementById('login-form').addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const email = document.getElementById('email').value;
+          const senha = document.getElementById('senha').value;
+
+          const response = await fetch('/api/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, senha })
+          });
+          const data = await response.json();
+
+          if (data.success) {
+              alert('Login bem-sucedido');
+              window.location.href = 'home.html';
+          } else {
+              alert(data.error || 'Erro ao fazer login');
+          }
+      });
+  </script>
+  </body>
+</html>
+    
