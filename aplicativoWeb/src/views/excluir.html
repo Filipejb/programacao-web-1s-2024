@@ -1,0 +1,60 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Excluir item</title>
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        body {
+            background-color: #1e1e1e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="confirmBox">
+        <h2>Certeza que deseja excluir?</h2>
+        <button id="btnSim" class="btn btn-sim">Sim</button>
+        <button id="btnNao" class="btn btn-nao">Não</button>
+    </div>
+
+    <script>
+       document.addEventListener("DOMContentLoaded", function() {
+    var params = new URLSearchParams(window.location.search);
+    var id = params.get('id');
+
+    document.getElementById("btnSim").addEventListener("click", function() {
+        fetch(`/api/itens/${id}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = 'home.html';
+            } else {
+                console.error('Erro ao excluir item:', response.statusText);
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao excluir item:', error);
+        });
+    });
+
+    document.getElementById("btnNao").addEventListener("click", function() {
+        window.location.href = 'home.html';
+    });
+});
+
+    </script>
+</body>
+</html>
