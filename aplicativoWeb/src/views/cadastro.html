@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrar</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="register-container">
+      <i class="bx bxs-user"></i>
+      <h1>Registrar</h1>
+      <form id="register-form">
+        <input type="email" placeholder="Email" id="email" required />
+        <input type="password" id="senha" placeholder="Senha" required />
+        <input
+          type="password"
+          id="confirm-senha"
+          placeholder="Confirme a Senha"
+          required
+        />
+        <div id="error-message" class="error-message"></div>
+        <a href="login.html">Já possui conta?</a>
+        <button type="submit" class="btn-salvar">Registrar</button>
+      </form>
+    </div>
+    <script>
+        document
+          .getElementById("register-form")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
+            const confirmSenha =
+              document.getElementById("confirm-senha").value;
+            const errorMessage = document.getElementById("error-message");
+  
+            if (senha !== confirmSenha) {
+              errorMessage.textContent = "As senhas não coincidem!";
+            } else {
+              errorMessage.textContent = "";
+              fetch('/api/cadastro', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, senha })
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.error) {
+                  errorMessage.textContent = data.error;
+                } else {
+                  window.location.href = "login.html";
+                }
+              })
+              .catch(error => {
+                console.error('Erro ao registrar usuário:', error);
+                errorMessage.textContent = 'Erro ao registrar usuário.';
+              });
+            }
+          });
+      </script>
+  </body>
+</html>
