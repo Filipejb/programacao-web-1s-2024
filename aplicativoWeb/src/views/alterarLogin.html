@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alterar Informações</title>
+  <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+  
+    .btn-voltar {
+      position: fixed; 
+      top: 10px; 
+      left: 10px; 
+      background-color: #ffad33; 
+      color: #fff; 
+      padding: 10px 20px; 
+      border: none; 
+      border-radius: 5px; 
+      cursor: pointer; 
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <i class="bx bxs-user"></i>
+    <h1>Alterar Informações</h1>
+    <form id="register-form">
+      <input type="email" id="new-email" placeholder="Novo Email" required />
+      <input type="password" id="password" placeholder="Nova Senha" required />
+      <input type="password" id="confirm-password" placeholder="Confirmar Nova Senha" required />
+      <div id="error-message" class="error-message"></div>
+      <button type="submit" class="btn-salvar">Alterar</button>
+    </form>
+  </div>
+
+  <button class="btn-voltar" onclick="window.location.href = 'home.html';">Voltar</button>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("register-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            const newEmail = document.getElementById("new-email").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+            
+            if (password !== confirmPassword) {
+                alert("As senhas não coincidem.");
+                return;
+            }
+            
+            const token = "seu_token_jwt_aqui"; 
+            
+            
+            fetch("/api/alterar-login", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ newEmail, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+               
+                console.log(data);
+                alert("Login alterado com sucesso!");
+            })
+            .catch(error => {
+                console.error("Erro ao alterar login:", error);
+                alert("Ocorreu um erro ao alterar o login. Por favor, tente novamente.");
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
