@@ -1,0 +1,209 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tela principal</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css">
+    <style>
+      .userAccount {
+        text-align: center; /* Centraliza o conteúdo */
+      }
+      .userAccount a {
+        display: flex;
+        flex-direction: column; /* Alinha os itens na vertical */
+        align-items: center; /* Centraliza os itens horizontalmente */
+        text-decoration: none;
+        color: inherit; /* Mantém a cor do texto */
+      }
+      .userAccount i {
+        font-size: 400%; /* Ajusta o tamanho do ícone conforme necessário */
+      }
+      .btnSaldo {
+        bottom: 20px;
+        left: 20px;
+        background-color: #fbff00;
+        color: white;
+        cursor: pointer;
+      }
+      .btnExcluir {
+        background-color: #ffad33;
+        color: white;
+        cursor: pointer;
+      }
+      .btnEditar {
+        background-color: #ffad33;
+        color: white;
+        cursor: pointer;
+      }
+      .btnSair {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #ffad33;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        z-index: 999; /* Garante que fique acima de outros elementos */
+        border: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="userAccount">
+      <a href="alterarlogin.html">
+        <i class="bx bxs-user"></i>
+        <span>Conta</span></a
+      >
+    </div>
+    <main>
+      <div class="formContainer">
+        <div class="newItem">
+          <div class="divDesc">
+            <label for="desc">Descrição</label>
+            <input type="text" id="desc" />
+          </div>
+          <div class="divAmount">
+            <label for="amount">Valor</label>
+            <input type="number" id="amount" />
+          </div>
+          <div class="divType">
+            <label for="type">Tipo</label>
+            <select id="type">
+              <option>Ganho</option>
+              <option>Gasto</option>
+            </select>
+          </div>
+          <button id="btnNew">Incluir</button>
+        </div>
+      </div>
+      <div class="divTable">
+        <table>
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th class="columnAmount">Valor</th>
+              <th class="columnType">Tipo</th>
+              <th class="columnAction"></th>
+              <th class="columnEdit"></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </main>
+
+  
+    <button class="btnSaldo" onclick="window.location.href = '/saldoTotal.html';">Saldo do Mês</button>
+
+  
+    <button class="btnSair" onclick="window.location.href = '/logout.html';">Sair</button>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        let editId = null;
+  
+        function adicionarItem(id, descricao, valor, tipo) {
+          var table = document.querySelector("table tbody");
+          var newRow = table.insertRow(-1);
+  
+          var cell1 = newRow.insertCell(0);
+          var cell2 = newRow.insertCell(1);
+          var cell3 = newRow.insertCell(2);
+          var cell4 = newRow.insertCell(3);
+  
+          cell1.innerHTML = descricao;
+          cell2.innerHTML = valor;
+          cell3.innerHTML = tipo;
+          cell4.innerHTML = `<button class='btnExcluir' data-id='${id}'>Excluir</button>
+                             <button class='btnEditar' data-id='${id}'>Editar</button>`;
+  
+          var btnExcluir = cell4.querySelector(".btnExcluir");
+          btnExcluir.addEventListener("click", function() {
+            var id = this.dataset.id;
+            window.location.href = `excluir.html?id=${id}`;
+          });
+  
+          var btnEditar = cell4.querySelector(".btnEditar");
+          btnEditar.addEventListener("click", function() {
+            var id = this.dataset.id;
+            window.location.href = `alterarTabela.html?id=${id}`;
+          });
+        }
+  
+        document.getElementById("btnNew").addEventListener("click", function(event) {
+          event.preventDefault();
+  
+          var descricao = document.getElementById("desc").value;
+          var valor = document.getElementById("amount").value;
+          var tipo = document.getElementById("type").value;
+  
+          if (editId) {
+         
+            fetch(`/api/itens/${editId}`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ descricao, valor, tipo })
+            })
+            .then(response => response.json())
+            .then(data => {
+              location.reload();
+            })
+            .catch(error => {
+              console.error('Erro ao atualizar item:', error);
+            });
+          } else {
+          
+            fetch('/api/itens', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ descricao, valor, tipo })
+            })
+            .then(response => response.json())
+            .then(data => {
+              adicionarItem(data.id, descricao, valor, tipo);
+              document.getElementById("desc").value = "";
+              document.getElementById("amount").value = "";
+              document.getElementById("type").value = "Ganho";
+            })
+            .catch(error => {
+              console.error('Erro ao adicionar item:', error);
+            });
+          }
+          editId = null;
+        });
+  
+        function atualizarTabela() {
+          fetch('/api/itens')
+            .then(response => response.json())
+            .then(data => {
+              data.forEach(item => {
+                adicionarItem(item.id, item.descricao, item.valor, item.tipo);
+              });
+            })
+            .catch(error => {
+              console.error('Erro ao buscar itens:', error);
+            });
+        }
+  
+        atualizarTabela();
+      });
+    </script>
+    
+    
+  </body>
+</html>
