@@ -1,0 +1,112 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alterar item</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+        body {
+      background-color: #1e1e1e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    </style>
+
+  </head>
+<body>
+    <div class="formContainer">
+        <div class="newItem">
+          <div class="divDesc">
+            <label for="desc">Descrição</label>
+            <input type="text" id="desc" />
+          </div>
+          <div class="divAmount">
+            <label for="amount">Valor</label>
+            <input type="number" id="amount" />
+          </div>
+          <div class="divType">
+            <label for="type">Tipo</label>
+            <select id="type">
+              <option>Ganho</option>
+              <option>Gasto</option>
+            </select>
+          </div>
+          <a href="home.html" class="btn btn-cancelar">Cancelar</a>
+          <a href="home.html" class="btn btn-salvar" onclick="salvar()">Salvar</a>
+        </div>
+      </div>
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+  
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    console.log('ID do item:', id);
+
+    
+    fetch(`/api/itens/${id}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Dados do item:', data);
+            document.getElementById("desc").value = data.descricao;
+            document.getElementById("amount").value = data.valor;
+            document.getElementById("type").value = data.tipo;
+        })
+        .catch(error => {
+            console.error('Erro ao buscar item:', error);
+        });
+});
+
+    
+     
+        function cancelar() {
+            console.log('Edição cancelada');
+            window.location.href = 'home.html';
+        }
+    
+       
+
+function salvar() {
+    const id = new URLSearchParams(window.location.search).get('id');
+    console.log('ID do item a ser atualizado:', id);
+    const descricao = document.getElementById("desc").value;
+    const valor = document.getElementById("amount").value;
+    const tipo = document.getElementById("type").value;
+    console.log('Novos dados:', { descricao, valor, tipo });
+
+    fetch(`/api/itens/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ descricao, valor, tipo })
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Item atualizado com sucesso');
+            window.location.href = 'home.html';
+        } else {
+            console.error('Erro ao atualizar item:', response.statusText);
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao atualizar item:', error);
+    });
+}
+
+
+    </script>
+    
+</body>
+</html>
